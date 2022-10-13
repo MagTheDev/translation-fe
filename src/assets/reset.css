@@ -1,0 +1,44 @@
+/*reset.css*/
+/* RESETS */
+
+@font-face {
+  font-family: Montserrat;
+  src: url('Montserrat-VariableFont_wght.ttf');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Montserrat;
+  src: url('Montserrat-Italic-VariableFont_wght.ttf');
+  font-style: italic;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font: 62.5% / 1.15 sans-serif;
+}
+
+body {
+
+  margin: 0 auto;
+  width: 98%;
+  font: 1.6rem/1.25 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-image: url("./background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #090809;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+@media screen and (min-width: 620px) {
+  body {
+    font-size: 1.9rem;
+    line-height: 1.31579;
+  }
+}
+/*END RESETS*/
