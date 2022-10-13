@@ -1,24 +1,27 @@
 <template>
 	<div class="container">
 
-	
-		
+
+
 		<div class="navbar-container">
-			
+
 			<div class="logo-container">
 				<img src="./assets/3b_logo.png" alt="3BInfra Logo" class="logo">
 			</div>
 
 			<div class="navbar">
-				
+
 				<div class="navbar-translations-number">
 					{{number_of_translations}}
 				</div>
 
 				<div class="navbar-toolkit">
-					<ph-plus :size="40" color="#7eb81b" weight="duotone" class="clickable" @click="addDialogState = true"/>
-					<ph-pencil :size="40" color="#7eb81b" weight="duotone" class="clickable" @click="editDialogState = true"/>
-					<ph-trash :size="40" color="#7eb81b" weight="duotone" class="clickable" @click="delDialogState = true"/>
+					<ph-plus :size="40" color="#7eb81b" weight="duotone" class="clickable"
+						@click="addDialogState = true" />
+					<ph-pencil :size="40" color="#7eb81b" weight="duotone" class="clickable"
+						@click="editDialogState = true" />
+					<ph-trash :size="40" color="#7eb81b" weight="duotone" class="clickable"
+						@click="delDialogState = true" />
 				</div>
 
 			</div>
@@ -35,60 +38,68 @@
 						<button @click="delDialogState = false" class="button green">No</button>
 					</div>
 				</div>
-		
+
 			</GDialog>
 
 			<GDialog v-model="addDialogState">
-				<Add @added="added()"/>
+				<Add @added="added()" />
 			</GDialog>
 
 			<GDialog v-model="editDialogState">
-				<Edit :slovak="translation.slovak" :english="translation.english" :german="translation.german" :to-edit="translation.id" @edited="wasEdited()"/>
+				<Edit :slovak="translation.slovak" :english="translation.english" :german="translation.german"
+					:to-edit="translation.id" @edited="wasEdited()" />
 			</GDialog>
 
 			<div class="translation-container">
-				
+
 				<div class="translation">
 					<div class="translation-header">
 						SLOVAK
 					</div>
 					<div class="translation-input">
-						<input type="text" name="" id="" class="translation-form" v-model="translation.slovak" @keyup.enter="fetch = !fetch" @input="edited = 'SLOVAK'">
+						<input type="text" name="" id="" class="translation-form" v-model="translation.slovak"
+							@keyup.enter="fetch = !fetch" @input="edited = 'SLOVAK'">
 					</div>
 				</div>
 
 				<div class="translation">
-						<div class="translation-header">
+					<div class="translation-header">
 						ENGLISH
 					</div>
 					<div class="translation-input">
-						<input type="text" name="" id="" class="translation-form" v-model="translation.english" @keyup.enter="fetch = !fetch" @input="edited = 'ENGLISH'">
+						<input type="text" name="" id="" class="translation-form" v-model="translation.english"
+							@keyup.enter="fetch = !fetch" @input="edited = 'ENGLISH'">
 					</div>
 				</div>
-				
+
 				<div class="translation">
 					<div class="translation-header">
 						GERMAN
 					</div>
 					<div class="translation-input">
-						<input type="text" name="" id="" class="translation-form" v-model="translation.german" @keyup.enter="fetch = !fetch" @input="edited = 'GERMAN'">
+						<input type="text" name="" id="" class="translation-form" v-model="translation.german"
+							@keyup.enter="fetch = !fetch" @input="edited = 'GERMAN'">
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="navigation-container">
-				<button class="button" @click="page -= 1"> <ph-caret-double-left :size="32" color="#7eb81b" weight="duotone" /> </button>
+				<button class="button" @click="page -= 1">
+					<ph-caret-double-left :size="32" color="#7eb81b" weight="duotone" />
+				</button>
 				<div v-if="allHits.length === 0">
 					0/0
 				</div>
 				<div v-else>
 					{{page + 1}} / {{numOfHits}}
 				</div>
-				<button class="button" @click="page += 1"> <ph-caret-double-right :size="32" color="#7eb81b" weight="duotone" /> </button>
+				<button class="button" @click="page += 1">
+					<ph-caret-double-right :size="32" color="#7eb81b" weight="duotone" />
+				</button>
 			</div>
 
 		</div>
-		
+
 
 	</div>
 </template>
@@ -143,19 +154,19 @@ watch([fetch], async () => {
 
 	let input
 
-	if ( edited.value == "SLOVAK") {
-		input = { language: "SLOVAK", translation: translation.slovak } 
-	} else if ( edited.value == "ENGLISH") {
-		input = { language: "ENGLISH", translation: translation.english } 
+	if (edited.value == "SLOVAK") {
+		input = { language: "SLOVAK", translation: translation.slovak }
+	} else if (edited.value == "ENGLISH") {
+		input = { language: "ENGLISH", translation: translation.english }
 	} else if (edited.value == "GERMAN") {
-		input = { language: "GERMAN", translation: translation.german } 
+		input = { language: "GERMAN", translation: translation.german }
 	}
-	
+
 	let fetched_data = await get_translation_by_word(input as WordDto)
-	
+
 	for (const translation of fetched_data) {
 
-		if ( !allHits.includes(translation) ) { 
+		if (!allHits.includes(translation)) {
 			allHits.push(translation)
 		}
 	}
@@ -167,7 +178,7 @@ watch([page, allHits], async () => {
 
 	if (allHits.length === 0) {
 		return
-	}	
+	}
 
 	const data = allHits[page.value]
 
@@ -221,153 +232,152 @@ const wasEdited = () => {
 
 const added = () => {
 	addDialogState.value = false
-	number_of_translations.value += 1	
+	number_of_translations.value += 1
 }
 
 </script>
 
 <style scoped>
+.logo {
+	width: 160px;
+	height: 96px;
+}
 
-	.logo {
-		width: 160px;
-		height: 96px;
-	}
+.logo-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-	.logo-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		
-		position: absolute;
-		top: -12.5px;
-		left: 10px;
+	position: absolute;
+	top: -12.5px;
+	left: 10px;
 
-	}
+}
 
-	.navigation-container {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	.button {
-		width: 7rem;
-		height: 3.5rem;
-		background-color: white;
-		border: none;
-		margin: 10px;
-		cursor: pointer;
-		border-radius: 5px;
-		transition: all 0.3s ease-in-out;
-	}
+.navigation-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
-	.green {
-		color: white;
-		border: none;
-		background-color: #7eb81b;
-	}
+.button {
+	width: 7rem;
+	height: 3.5rem;
+	background-color: white;
+	border: none;
+	margin: 10px;
+	cursor: pointer;
+	border-radius: 5px;
+	transition: all 0.3s ease-in-out;
+}
 
-	.green:hover {
-		box-shadow: 3px 2px 5px #75aa19;
-	}
+.green {
+	color: white;
+	border: none;
+	background-color: #7eb81b;
+}
 
-	.red {
-		color: #F37878;
-		border: 1px solid#F37878;
-		
-	}
+.green:hover {
+	box-shadow: 3px 2px 5px #75aa19;
+}
 
-	.button-container {
-		margin-left: 20px;
-	}
+.red {
+	color: #F37878;
+	border: 1px solid#F37878;
 
-	* {
-		font-family:'Montserrat';
-	}
+}
 
-	.container {
-		height: 100vh;
-		overflow: hidden;
-	}
-	.navbar-container {
-		display: flex;
-		height: 6rem;
-		justify-content: center;
-	}
+.button-container {
+	margin-left: 20px;
+}
 
-	.navbar {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: white;
-		width: 30%;
-		border-bottom-left-radius: 10px;
-		border-bottom-right-radius: 10px;		
-	}
+* {
+	font-family: 'Montserrat';
+}
 
-	.navbar-translations-number {
-		margin: 10px;
-		color: gray;
-		font-size: 32px;
-		font-style: italic;
-	}
+.container {
+	height: 100vh;
+	overflow: hidden;
+}
 
-	.navbar-toolkit {
-		padding-top: 5px;
-	}
+.navbar-container {
+	display: flex;
+	height: 6rem;
+	justify-content: center;
+}
 
-	.clickable {
-		cursor: pointer;
-	}
+.navbar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: white;
+	width: 30%;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
 
-	.dialog {
-		width: 100%;
-		height: 10rem;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding-left: 128px;
-	}
+.navbar-translations-number {
+	margin: 10px;
+	color: gray;
+	font-size: 32px;
+	font-style: italic;
+}
 
-	.main {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
-		height: 85%;
-		align-items: center;
-		justify-content: center;
-	}
+.navbar-toolkit {
+	padding-top: 5px;
+}
 
-	.translation-container {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+.clickable {
+	cursor: pointer;
+}
 
-	.translation {
-		height: 15rem;
-		width: 33%;
-		background-color: white;
-		border-radius: 5px;
-		margin: 20px;
-		border: none
-	}
+.dialog {
+	width: 100%;
+	height: 10rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-left: 128px;
+}
 
-	.translation-header {
-		margin: 10px;
-		font-size: 25px;
-		font-style: italic;
-		color: gray;
-	}
+.main {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 85%;
+	align-items: center;
+	justify-content: center;
+}
 
-	.translation-form {
-		outline: none;
-		border: none;
-		transition: all 0.5s ease-in-out;
-		height: 100%;
-		width: 100%;
-		font-size: 5rem;
-	}
+.translation-container {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
+.translation {
+	height: 15rem;
+	width: 33%;
+	background-color: white;
+	border-radius: 5px;
+	margin: 20px;
+	border: none
+}
 
+.translation-header {
+	margin: 10px;
+	font-size: 25px;
+	font-style: italic;
+	color: gray;
+}
+
+.translation-form {
+	outline: none;
+	border: none;
+	transition: all 0.5s ease-in-out;
+	height: 100%;
+	width: 100%;
+	font-size: 5rem;
+}
 </style>
